@@ -1,12 +1,13 @@
 import discord
 import os
 from dotenv import load_dotenv
-
+from urllib.parse import urlparse
 load_dotenv()
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
 # GETS THE CLIENT OBJECT FROM DISCORD.PY. CLIENT IS SYNONYMOUS WITH BOT.
-bot = discord.Client(intents=discord.Intents.all())
+
+bot = discord.Client(command_prefix='$',intents=discord.Intents.all())
 
 
 
@@ -23,12 +24,20 @@ async def on_ready():
 # EVENT LISTENER FOR WHEN A NEW MESSAGE IS SENT TO A CHANNEL.
 @bot.event
 async def on_message(message):
-	# CHECKS IF THE MESSAGE THAT WAS SENT IS EQUAL TO "HELLO".
-	if message.content == "Hi":
-		# SENDS BACK A MESSAGE TO THE CHANNEL.
-		await message.channel.send("Hello Test Response")
+  	await message.channel.send(get_domain_name(message))
 
-# EVENT LISTENER FOR COMMAND
+def get_domain_name(url):
+     try:
+         results = get_sub_domain_name(url).split('.') # splits the URL so we can return only the last two elements (such as example.com)
+         return results[-2] + '.' + results[-1] # returns only the last two elements in the list
+     except:
+         return 'gdn'
+
+def get_sub_domain_name(url):
+     try:
+         return urlparse(url).netloc
+     except:
+         return 'subdomain' # ensures that at least something is returned
 
 
 # EXECUTE BOT
