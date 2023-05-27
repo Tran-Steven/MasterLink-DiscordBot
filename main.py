@@ -6,12 +6,10 @@ load_dotenv()
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
 # GETS THE CLIENT OBJECT FROM DISCORD.PY. CLIENT IS SYNONYMOUS WITH BOT.
-intents = discord.Intents.default()
-bot = discord.Client(intents=intents)
+bot = discord.Client(intents=discord.Intents.all())
 
 
 
-# EVENT LISTENER FOR WHEN THE BOT HAS SWITCHED FROM OFFLINE TO ONLINE
 @bot.event
 async def on_ready():
 	# CREATES A COUNTER TO KEEP TRACK OF HOW MANY GUILDS / SERVERS THE BOT IS CONNECTED TO.
@@ -26,9 +24,12 @@ async def on_ready():
 @bot.event
 async def on_message(message):
 	# CHECKS IF THE MESSAGE THAT WAS SENT IS EQUAL TO "HELLO".
-	if message.content == "hello":
+	if message.content == "Hi":
 		# SENDS BACK A MESSAGE TO THE CHANNEL.
 		await message.channel.send("Hello Test Response")
+
+# EVENT LISTENER FOR COMMAND
+
 
 # EXECUTE BOT
 bot.run(DISCORD_TOKEN)
